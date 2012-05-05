@@ -1,6 +1,6 @@
 /* http://keith-wood.name/localisation.html
-   Localisation assistance for jQuery v1.0.3.
-   Written by Keith Wood (kbwood@virginbroadband.com.au) June 2007. 
+   Localisation assistance for jQuery v1.0.4.
+   Written by Keith Wood (kbwood{at}iinet.com.au) June 2007. 
    Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
    MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
    Please attribute the author if you use it. */
@@ -23,21 +23,48 @@
                      (string) code for the language to load (aa[-AA]) or
                      (object} options for the call with
 					   language  (string) the code for the language
+					   loadBase  (boolean) true to also load the base package or false (default) to not
+                       path      (string or string[2]) the paths to the JavaScript,
+                                 either as both or [base, localisations]
 					   timeout   (number) the time period in milliseconds (default 500)
-					   loadBase  (boolean) true to also load the base package or false (default) to not */
-$.localise = function(packages, settings) {
+   @param  loadBase  (boolean, optional) true to also load the base package or false (default) to not -
+                     omit this if settings is an object
+   @param  path      (string or string[2], optional) the paths to the JavaScript,
+                     either as both or [base, localisations] -
+                     omit this if settings is an object
+   @param  timeout   (number, optional) the time period in milliseconds (default 500) -
+                     omit this if settings is an object */
+$.localise = function(packages, settings, loadBase, path, timeout) {
+	if (typeof settings != 'object' && typeof settings != 'string') {
+		timeout = path;
+		path = loadBase;
+		loadBase = settings;
+		settings = '';
+	}
+	if (typeof loadBase != 'boolean') {
+		timeout = path;
+		path = loadBase;
+		loadBase = false;
+	}
+	if (typeof path != 'string' && !isArray(path)) {
+		timeout = path;
+		path = ['', ''];
+	}
 	var saveSettings = {async: $.ajaxSettings.async, timeout: $.ajaxSettings.timeout};
-	settings = (typeof settings == 'string' ? {language: settings} : settings || {});
+	settings = (typeof settings != 'string' ? settings || {} :
+		{language: settings, loadBase: loadBase, path: path, timeout: timeout});
+	var paths = (!settings.path ? ['', ''] :
+		(isArray(settings.path) ? settings.path : [settings.path, settings.path]));
 	$.ajaxSetup({async: false, timeout: (settings.timeout || 500)});
 	var localiseOne = function(package, lang) {
 		if (settings.loadBase) {
-			$.getScript(package + '.js');
+			$.getScript(paths[0] + package + '.js');
 		}
 		if (lang.length >= 2) {
-			$.getScript(package + '-' + lang.substring(0, 2) + '.js');
+			$.getScript(paths[1] + package + '-' + lang.substring(0, 2) + '.js');
 		}
 		if (lang.length >= 5) {
-			$.getScript(package + '-' + lang.substring(0, 5) + '.js');
+			$.getScript(paths[1] + package + '-' + lang.substring(0, 5) + '.js');
 		}
 	};
 	var lang = normaliseLang(settings.language || $.localise.defaultLanguage);
