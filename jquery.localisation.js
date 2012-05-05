@@ -1,5 +1,5 @@
 /* http://keith-wood.name/localisation.html
-   Localisation assistance for jQuery v1.0.4.
+   Localisation assistance for jQuery v1.0.5.
    Written by Keith Wood (kbwood{at}iinet.com.au) June 2007. 
    Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
    MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
@@ -46,33 +46,32 @@ $.localise = function(packages, settings, loadBase, path, timeout) {
 		path = loadBase;
 		loadBase = false;
 	}
-	if (typeof path != 'string' && !isArray(path)) {
+	if (typeof path != 'string' && !$.isArray(path)) {
 		timeout = path;
 		path = ['', ''];
 	}
-	var saveSettings = {async: $.ajaxSettings.async, timeout: $.ajaxSettings.timeout};
 	settings = (typeof settings != 'string' ? settings || {} :
 		{language: settings, loadBase: loadBase, path: path, timeout: timeout});
 	var paths = (!settings.path ? ['', ''] :
-		(isArray(settings.path) ? settings.path : [settings.path, settings.path]));
-	$.ajaxSetup({async: false, timeout: (settings.timeout || 500)});
+		($.isArray(settings.path) ? settings.path : [settings.path, settings.path]));
+	var opts = {async: false, dataType: 'script',
+		timeout: (settings.timeout != null ? settings.timeout : 500)};
 	var localiseOne = function(package, lang) {
 		if (settings.loadBase) {
-			$.getScript(paths[0] + package + '.js');
+			$.ajax($.extend(opts, {url: paths[0] + package + '.js'}));
 		}
 		if (lang.length >= 2) {
-			$.getScript(paths[1] + package + '-' + lang.substring(0, 2) + '.js');
+			$.ajax($.extend(opts, {url: paths[1] + package + '-' + lang.substring(0, 2) + '.js'}));
 		}
 		if (lang.length >= 5) {
-			$.getScript(paths[1] + package + '-' + lang.substring(0, 5) + '.js');
+			$.ajax($.extend(opts, {url: paths[1] + package + '-' + lang.substring(0, 5) + '.js'}));
 		}
 	};
 	var lang = normaliseLang(settings.language || $.localise.defaultLanguage);
-	packages = (isArray(packages) ? packages : [packages]);
+	packages = ($.isArray(packages) ? packages : [packages]);
 	for (i = 0; i < packages.length; i++) {
 		localiseOne(packages[i], lang);
 	}
-	$.ajaxSetup(saveSettings);
 };
 
 // Localise it!
@@ -89,11 +88,6 @@ function normaliseLang(lang) {
 		lang = lang.substring(0, 3) + lang.substring(3).toUpperCase();
 	}
 	return lang;
-}
-
-/* Determine whether an object is an array. */
-function isArray(a) {
-	return (a && a.constructor == Array);
 }
 
 })(jQuery);
