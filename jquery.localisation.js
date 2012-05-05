@@ -1,8 +1,10 @@
 /* http://home.iprimus.com.au/kbwood/jquery/localisation.html
-   Localisation assistance for jQuery v1.0.
+   Localisation assistance for jQuery v1.0.1.
    Written by Keith Wood (kbwood@iprimus.com.au) June 2007. 
    Under the Creative Commons Licence http://creativecommons.org/licenses/by/3.0/
    Share or Remix it but please Attribute the author. */
+
+(function($) { // Hide scope, no $ conflict
 
 /* Load applicable localisation package(s) for one or more jQuery packages.
    Assumes that the localisations are named <base>-<lang>.js
@@ -30,7 +32,7 @@ $.localise = function(pkg, settings) {
 		}
 	};
 	lang = (settings && settings.language ? settings.language : $.defaultLanguage).toLowerCase();
-	if (pkg.isArray) {
+	if (isArray(pkg)) {
 		for (i = 0; i < pkg.length; i++) {
 			localiseOne(pkg[i], lang);
 		}
@@ -44,5 +46,9 @@ $.localise = function(pkg, settings) {
 /* Retrieve the default language set for the browser. */
 $.defaultLanguage = (navigator.language ? navigator.language /* Mozilla */ : navigator.userLanguage /* IE */);
 
-/* Make it easy to detect an array. */
-Array.prototype.isArray = true;
+/* Determine whether an object is an array. */
+function isArray(a) {
+	return (a.constructor && a.constructor.toString().match(/\Array\(\)/));
+}
+
+})(jQuery);
