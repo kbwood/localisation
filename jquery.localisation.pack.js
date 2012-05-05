@@ -1,6 +1,7 @@
 /* http://keith-wood.name/localisation.html
-   Localisation assistance for jQuery v1.0.2.
-   Written by Keith Wood (kbwood@iprimus.com.au) June 2007. 
-   Under the Creative Commons Licence http://creativecommons.org/licenses/by/3.0/
-   Share or Remix it but please Attribute the author. */
-(function($){$.localise=function(c,d){var e={async:$.ajaxSettings.async,timeout:$.ajaxSettings.timeout};$.ajaxSetup({async:false,timeout:(d&&d.timeout?d.timeout:500)});var f=function(a,b){if(d&&d.loadBase){$.getScript(a+'.js')}if(b.length>=2){$.getScript(a+'-'+b.substring(0,2)+'.js')}if(b.length>=5){$.getScript(a+'-'+b.substring(0,5)+'.js')}};var g=normaliseLang(d&&d.language?d.language:$.defaultLanguage);if(isArray(c)){for(i=0;i<c.length;i++){f(c[i],g)}}else{f(c,g)}$.ajaxSetup(e)};$.defaultLanguage=normaliseLang(navigator.language?navigator.language:navigator.userLanguage);function normaliseLang(a){a=a.replace(/_/,'-').toLowerCase();if(a.length>3){a=a.substring(0,3)+a.substring(3).toUpperCase()}return a}function isArray(a){return(a.constructor&&a.constructor.toString().match(/\Array\(\)/))}})(jQuery);
+   Localisation assistance for jQuery v1.0.3.
+   Written by Keith Wood (kbwood@virginbroadband.com.au) June 2007. 
+   Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
+   MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
+   Please attribute the author if you use it. */
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('(1($){$.4=1(c,d){h e={j:$.o.j,6:$.o.6};d=(u d==\'v\'?{k:d}:d||{});$.p({j:w,6:(d.6||x)});h f=1(a,b){7(d.y){$.l(a+\'.m\')}7(b.8>=2){$.l(a+\'-\'+b.9(0,2)+\'.m\')}7(b.8>=5){$.l(a+\'-\'+b.9(0,5)+\'.m\')}};h g=n(d.k||$.4.q);c=(r(c)?c:[c]);z(i=0;i<c.8;i++){f(c[i],g)}$.p(e)};$.A=$.4;$.4.q=n(s.k||s.B);1 n(a){a=a.C(/D/,\'-\').E();7(a.8>3){a=a.9(0,3)+a.9(3).F()}t a}1 r(a){t(a&&a.G==H)}})(I);',45,45,'|function|||localise||timeout|if|length|substring||||||||var||async|language|getScript|js|normaliseLang|ajaxSettings|ajaxSetup|defaultLanguage|isArray|navigator|return|typeof|string|false|500|loadBase|for|localize|userLanguage|replace|_|toLowerCase|toUpperCase|constructor|Array|jQuery'.split('|'),0,{}))
